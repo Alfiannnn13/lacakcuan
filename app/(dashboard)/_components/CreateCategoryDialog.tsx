@@ -31,7 +31,7 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import { DialogTrigger } from "@radix-ui/react-dialog";
 import { CircleOff, Loader2, PlusSquare } from "lucide-react";
-import { useCallback, useState } from "react";
+import { ReactNode, useCallback, useState } from "react";
 import { useForm } from "react-hook-form";
 import Picker from "@emoji-mart/react";
 import data from "@emoji-mart/data";
@@ -43,10 +43,11 @@ import { useTheme } from "next-themes";
 
 interface Props {
   type: TransactionType;
-  successCallback: (Category: Category) => void;
+  successCallback: (category: Category) => void;
+  trigger?: ReactNode;
 }
 
-function CreateCategoryDialog({ type, successCallback }: Props) {
+function CreateCategoryDialog({ type, successCallback, trigger }: Props) {
   const [open, setOpen] = useState(false);
   const form = useForm<CreateCategorySchemaType>({
     resolver: zodResolver(CreateCategorySchema),
@@ -70,7 +71,7 @@ function CreateCategoryDialog({ type, successCallback }: Props) {
       toast.success(`Kategori ${data.name} berhasil dibuat 🎉`, {
         id: "create-category",
       });
-      
+
       successCallback(data);
 
       await queryClient.invalidateQueries({
@@ -99,15 +100,19 @@ function CreateCategoryDialog({ type, successCallback }: Props) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button
-          variant={"ghost"}
-          className="flex border-separate items-center justify-normal rounded-none border-b px-3 py-3 text-muted-foreground bg-background"
-        >
-          <PlusSquare className="mr-2 h-4 w-4" />
-          Buat Baru
-        </Button>
+        {trigger ? (
+          trigger
+        ) : (
+          <Button
+            variant={"ghost"}
+            className="flex border-separate items-center justify-normal rounded-none border-b px-3 py-3 text-muted-foreground bg-background"
+          >
+            <PlusSquare className="mr-2 h-4 w-4" />
+            Buat Baru
+          </Button>
+        )}
       </DialogTrigger>
-      <DialogContent className="bg-black">
+      <DialogContent className="bg-background">
         <DialogHeader>
           <DialogTitle>
             Buat{" "}
@@ -119,7 +124,6 @@ function CreateCategoryDialog({ type, successCallback }: Props) {
             >
               {type}
             </span>
-            {""}
             kategori
           </DialogTitle>
           <DialogDescription>
@@ -208,7 +212,7 @@ function CreateCategoryDialog({ type, successCallback }: Props) {
           </DialogClose>
           <Button onClick={form.handleSubmit(onSubmit)} disabled={isPending}>
             {!isPending && "Buat"}
-            {isPending && <Loader2 className="animate-spin"/>}
+            {isPending && <Loader2 className="animate-spin" />}
           </Button>
         </DialogFooter>
       </DialogContent>

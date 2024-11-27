@@ -9,6 +9,17 @@ const config: Config = {
   ],
   theme: {
   	extend: {
+		container: {
+			center: true, // Memastikan container terpusat
+			padding: "2rem", // Padding di kiri dan kanan
+			screens: {
+			  sm: "100%", // Full-width pada layar kecil
+			  md: "100%",
+			  lg: "1024px", // Tetapkan max-width untuk breakpoint tertentu
+			  xl: "1280px",
+			  "2xl": "1440px", // Maksimal lebar untuk monitor besar
+			},
+		},
   		backgroundImage: {
   			'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
   			'gradient-conic': 'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))'

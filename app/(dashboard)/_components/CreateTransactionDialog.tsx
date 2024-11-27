@@ -59,7 +59,7 @@ function CreateTransactionDialog({ trigger, type }: Props) {
     },
   });
 
-  const [open,setOpen] = useState(false);
+  const [open, setOpen] = useState(false);
 
   const handleCategoryChange = useCallback(
     (value: string) => {
@@ -70,7 +70,7 @@ function CreateTransactionDialog({ trigger, type }: Props) {
 
   const queryClient = useQueryClient();
 
-  const {mutate, isPending} = useMutation({
+  const { mutate, isPending } = useMutation({
     mutationFn: CreateTransaction,
     onSuccess: () => {
       toast.success("Transaksi sukses dibuat 🎉", {
@@ -85,18 +85,17 @@ function CreateTransactionDialog({ trigger, type }: Props) {
         category: undefined,
       });
 
-      // setelah membuat transaksi buth invalidasi untuk overview query refetch data homepage
       queryClient.invalidateQueries({
         queryKey: ["overview"],
       });
 
-      setOpen((prev) => !prev)
+      setOpen((prev) => !prev);
     },
   });
 
   const onSubmit = useCallback(
     (values: CreateTransactionSchemaType) => {
-      toast.loading("Membuat transaksi..", {id: "create-transaction"});
+      toast.loading("Membuat transaksi..", { id: "create-transaction" });
 
       mutate({
         ...values,
@@ -107,12 +106,12 @@ function CreateTransactionDialog({ trigger, type }: Props) {
   );
 
   return (
-    <Dialog open = {open} onOpenChange={setOpen}>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>{trigger}</DialogTrigger>
-      <DialogContent>
+      <DialogContent className="bg-background">
         <DialogHeader>
           <DialogTitle>
-            Membuat transaksi {""}{" "}
+            Membuat transaksi{" "}
             <span
               className={cn(
                 "m-1",
@@ -124,9 +123,7 @@ function CreateTransactionDialog({ trigger, type }: Props) {
           </DialogTitle>
         </DialogHeader>
         <Form {...form}>
-          <form className="space-y-4" onSubmit={form.handleSubmit
-            (onSubmit)
-          }>
+          <form className="space-y-4" onSubmit={form.handleSubmit(onSubmit)}>
             <FormField
               control={form.control}
               name="description"
@@ -157,13 +154,12 @@ function CreateTransactionDialog({ trigger, type }: Props) {
                 </FormItem>
               )}
             />
-            Transaksi: {form.watch("category")}
-            <div className="flex items-center justify-between gap-2">
+            <div className="flex flex-col sm:flex-row gap-2">
               <FormField
                 control={form.control}
                 name="category"
                 render={({ field }) => (
-                  <FormItem className="flex flex-col">
+                  <FormItem className="flex flex-col sm:w-1/2">
                     <FormLabel>Kategori</FormLabel>
                     <FormControl>
                       <CategoryPicker
@@ -182,7 +178,7 @@ function CreateTransactionDialog({ trigger, type }: Props) {
                 control={form.control}
                 name="date"
                 render={({ field }) => (
-                  <FormItem className="flex flex-col">
+                  <FormItem className="flex flex-col sm:w-1/2">
                     <FormLabel>Tanggal Transaksi</FormLabel>
                     <Popover>
                       <PopoverTrigger asChild>
@@ -190,7 +186,7 @@ function CreateTransactionDialog({ trigger, type }: Props) {
                           <Button
                             variant={"outline"}
                             className={cn(
-                              "w-[200px] pl-3 text-left font-normal",
+                              "w-full sm:w-[200px] pl-3 text-left font-normal",
                               !field.value && "text-muted-foreground"
                             )}
                           >
@@ -207,8 +203,8 @@ function CreateTransactionDialog({ trigger, type }: Props) {
                         <Calendar
                           mode="single"
                           selected={field.value}
-                          onSelect={(value)=>{
-                            if(!value) return;
+                          onSelect={(value) => {
+                            if (!value) return;
                             field.onChange(value);
                           }}
                           initialFocus
@@ -218,7 +214,7 @@ function CreateTransactionDialog({ trigger, type }: Props) {
                     <FormDescription>
                       Pilih tanggal transaksi
                     </FormDescription>
-                    <FormMessage/>
+                    <FormMessage />
                   </FormItem>
                 )}
               />
@@ -226,8 +222,7 @@ function CreateTransactionDialog({ trigger, type }: Props) {
           </form>
         </Form>
         <DialogFooter>
-          <DialogClose
-          asChild>
+          <DialogClose asChild>
             <Button
               type="button"
               variant={"secondary"}
@@ -240,7 +235,7 @@ function CreateTransactionDialog({ trigger, type }: Props) {
           </DialogClose>
           <Button onClick={form.handleSubmit(onSubmit)} disabled={isPending}>
             {!isPending && "Buat"}
-            {isPending && <Loader2 className="animate-spin"/>}
+            {isPending && <Loader2 className="animate-spin" />}
           </Button>
         </DialogFooter>
       </DialogContent>
@@ -249,5 +244,3 @@ function CreateTransactionDialog({ trigger, type }: Props) {
 }
 
 export default CreateTransactionDialog;
-
-

@@ -24,14 +24,14 @@ import { cn } from "@/lib/utils";
 
 interface Props {
   type: TransactionType;
-  onChange: (value: string)=>void;
+  onChange: (value: string) => void;
 }
 
 function CategoryPicker({ type, onChange }: Props) {
   const [open, setOpen] = React.useState(false);
   const [value, setValue] = React.useState("");
 
-  useEffect(()=> {
+  useEffect(() => {
     if (!value) return;
     onChange(value);
   }, [onChange, value]);
@@ -48,8 +48,8 @@ function CategoryPicker({ type, onChange }: Props) {
 
   const successCallback = useCallback(
     (category: Category) => {
-        setValue(category.name);
-        setOpen((prev) => !prev);
+      setValue(category.name);
+      setOpen((prev) => !prev);
     },
     [setValue, setOpen]
   );
@@ -68,23 +68,21 @@ function CategoryPicker({ type, onChange }: Props) {
           ) : (
             "Pilih Kategori"
           )}
-          <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50"/>
+          <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-[200] p-0">
+      <PopoverContent className="w-[200px] p-0">
         <Command
           onSubmit={(e) => {
             e.preventDefault();
           }}
         >
           <CommandInput placeholder="Cari Kategori..." />
-          <CreateCategoryDialog type={type} successCallback = {
-          successCallback
-          }/>
+          <CreateCategoryDialog type={type} successCallback={successCallback} />
           <CommandEmpty>
             <p>Kategori tidak ditemukan</p>
             <p className="text-xs text-muted-foreground">
-              Saran : Buat kategori baru
+              Saran: Buat kategori baru
             </p>
           </CommandEmpty>
           <CommandGroup>
@@ -119,8 +117,10 @@ export default CategoryPicker;
 
 function CategoryRow({ category }: { category: Category }) {
   return (
-    <div className="flec items-center gap-2">
-      <span role="img">{category.icon}</span>
+    <div className="flex items-center gap-2">
+      <span role="img" aria-label={category.name}>
+        {category.icon}
+      </span>
       <span>{category.name}</span>
     </div>
   );
