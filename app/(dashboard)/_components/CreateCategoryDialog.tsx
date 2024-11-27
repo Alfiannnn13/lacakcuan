@@ -40,6 +40,7 @@ import { CreateCategory } from "../_actions/categories";
 import { Category } from "@prisma/client";
 import { toast } from "sonner";
 import { useTheme } from "next-themes";
+import EmojiPicker from "@emoji-mart/react";
 
 interface Props {
   type: TransactionType;
@@ -163,15 +164,13 @@ function CreateCategoryDialog({ type, successCallback, trigger }: Props) {
                               <span className="text-5xl" role="img">
                                 {field.value}
                               </span>
-
                               <p className="text-xs text-muted-foreground">
-                                Klik untuk ganti
+                                Klik untuk ubah
                               </p>
                             </div>
                           ) : (
                             <div className="flex flex-col items-center gap-2">
                               <CircleOff className="h-[48px] w-[48px]" />
-
                               <p className="text-xs text-muted-foreground">
                                 Klik untuk memilih
                               </p>
@@ -179,19 +178,25 @@ function CreateCategoryDialog({ type, successCallback, trigger }: Props) {
                           )}
                         </Button>
                       </PopoverTrigger>
-                      <PopoverContent className="w-full">
+
+                      <PopoverContent className="w-full max-h-[300px] overflow-y-auto">
                         <Picker
                           data={data}
                           theme={theme.resolvedTheme}
                           onEmojiSelect={(emoji: { native: string }) => {
-                            field.onChange(emoji.native);
+                            field.onChange(emoji.native); // Memilih emoji dan mengubah nilai form
+                          }}
+                          style={{
+                            maxHeight: "300px", // Batasi tinggi
+                            overflowY: "auto", // Aktifkan scroll vertikal
+                            touchAction: "auto", // Izinkan gesture sentuhan di mobile
                           }}
                         />
                       </PopoverContent>
                     </Popover>
                   </FormControl>
                   <FormDescription>
-                    Inilah tampilan kategori Anda di App
+                    icon yang akan tampil di app
                   </FormDescription>
                 </FormItem>
               )}
