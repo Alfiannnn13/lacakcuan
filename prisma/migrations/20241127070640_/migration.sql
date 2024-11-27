@@ -1,12 +1,14 @@
 -- CreateTable
 CREATE TABLE "UserSettings" (
-    "userId" TEXT NOT NULL PRIMARY KEY,
-    "currency" TEXT NOT NULL
+    "userId" TEXT NOT NULL,
+    "currency" TEXT NOT NULL,
+
+    CONSTRAINT "UserSettings_pkey" PRIMARY KEY ("userId")
 );
 
 -- CreateTable
 CREATE TABLE "Category" (
-    "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "name" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
     "icon" TEXT NOT NULL,
@@ -15,16 +17,18 @@ CREATE TABLE "Category" (
 
 -- CreateTable
 CREATE TABLE "Transaction" (
-    "id" TEXT NOT NULL PRIMARY KEY,
-    "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updateAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "amount" REAL NOT NULL,
+    "id" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updateAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "amount" DOUBLE PRECISION NOT NULL,
     "description" TEXT NOT NULL,
-    "date" DATETIME NOT NULL,
+    "date" TIMESTAMP(3) NOT NULL,
     "userId" TEXT NOT NULL,
     "type" TEXT NOT NULL DEFAULT 'income',
     "category" TEXT NOT NULL,
-    "categoryIcon" TEXT NOT NULL
+    "categoryIcon" TEXT NOT NULL,
+
+    CONSTRAINT "Transaction_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -33,10 +37,10 @@ CREATE TABLE "MonthHistory" (
     "day" INTEGER NOT NULL,
     "month" INTEGER NOT NULL,
     "year" INTEGER NOT NULL,
-    "income" REAL NOT NULL,
-    "expense" REAL NOT NULL,
+    "income" DOUBLE PRECISION NOT NULL,
+    "expense" DOUBLE PRECISION NOT NULL,
 
-    PRIMARY KEY ("day", "month", "year", "userId")
+    CONSTRAINT "MonthHistory_pkey" PRIMARY KEY ("day","month","year","userId")
 );
 
 -- CreateTable
@@ -45,9 +49,9 @@ CREATE TABLE "YearHistory" (
     "month" INTEGER NOT NULL,
     "year" INTEGER NOT NULL,
     "income" INTEGER NOT NULL,
-    "expense" REAL NOT NULL,
+    "expense" DOUBLE PRECISION NOT NULL,
 
-    PRIMARY KEY ("month", "year", "userId")
+    CONSTRAINT "YearHistory_pkey" PRIMARY KEY ("month","year","userId")
 );
 
 -- CreateIndex
